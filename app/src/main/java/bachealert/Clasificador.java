@@ -2,60 +2,73 @@ package bachealert;
 
 import ai.onnxruntime.OnnxTensor;
 import ai.onnxruntime.OrtEnvironment;
+import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import org.springframework.stereotype.Service;
+
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Map;
 
+@Service
 public class Clasificador {
 
-    // Los mismos números que usamos en Colab (Normalize). Deben ser idénticos.
+    // Mismos números que en Colab. Deben ser idénticos.
     static final float[] MEDIA = {0.485f, 0.456f, 0.406f};
     static final float[] DESV  = {0.229f, 0.224f, 0.225f};
+    static final String RUTA_MODELO = "modelo/bachealert.onnx";
 
-    public static void main(String[] args) throws Exception {
-        if (args.length < 1) {
-            System.out.println("Uso: mvn exec:java -Dexec.args=\"fotos/mi_foto.jpg\"");
-            return;
-        }
-        String rutaFoto = args[0];
-        String rutaModelo = "modelo/bachealert.onnx";
+    private OrtEnvironment env;
+    private OrtSession sesion;
+    private String nombreEntrada;
 
-        // 1. Convertir la foto en números, igual que lo hacía transform() en Colab
-        float[][][][] entrada = prepararImagen(rutaFoto);
+    // Lo que devuelve el clasificador: dos porcentajes y el veredicto
+    public record Resultado(float probNoBache, float probBache, boolean esBache) {}
 
-        // 2. Abrir el modelo y pasarle la foto
-        try (OrtEnvironment env = OrtEnvironment.getEnvironment();
-             OrtSession sesion = env.createSession(rutaModelo, new OrtSession.SessionOptions());
-             OnnxTensor tensor = OnnxTensor.createTensor(env, entrada)) {
+    // Se ejecuta UNA vez, al arrancar el servidor: carga el modelo en memoria
+    @PostConstruct
+    void cargarModelo() throws OrtException {
+        env = OrtEnvironment.getEnvironment();
+        sesion = env.createSession(RUTA_MODELO, new OrtSession.SessionOptions());
+        nombreEntrada = sesion.getInputNames().iterator().next();
+    }
 
-            String nombreEntrada = sesion.getInputNames().iterator().next();
-            try (OrtSession.Result resultado = sesion.run(Map.of(nombreEntrada, tensor))) {
+    // Se ejecuta al apagar el servidor: libera el modelo
+    @PreDestroy
+    void cerrar() throws OrtException {
+        if (sesion != null) sesion.close();
+    }
 
-                // 3. Leer la respuesta: 2 números crudos, uno por clase
-                float[][] salida = (float[][]) resultado.get(0).getValue();
-                float[] probs = softmax(salida[0]);
+    // Recibe los bytes de una foto y responde. Se llama cada vez que llega una foto.
+    public Resultado clasificar(byte[] bytesFoto) throws IOException, OrtException {
+        float[][][][] entrada = prepararImagen(bytesFoto);
 
-                System.out.printf("No bache: %.1f%%%n", probs[0] * 100);
-                System.out.printf("Bache:    %.1f%%%n", probs[1] * 100);
-                System.out.println("Veredicto: " + (probs[1] > 0.5 ? "ES BACHE" : "NO ES BACHE"));
-            }
+        try (OnnxTensor tensor = OnnxTensor.createTensor(env, entrada);
+             OrtSession.Result resultado = sesion.run(Map.of(nombreEntrada, tensor))) {
+
+            float[][] salida = (float[][]) resultado.get(0).getValue();
+            float[] probs = softmax(salida[0]);
+            return new Resultado(probs[0], probs[1], probs[1] > 0.5f);
         }
     }
 
-    // Hace lo mismo que Resize + ToTensor + Normalize en Colab
-    static float[][][][] prepararImagen(String ruta) throws Exception {
-        BufferedImage original = ImageIO.read(new File(ruta));
+    // Igual que antes, pero ahora recibe bytes en vez de una ruta de archivo
+    static float[][][][] prepararImagen(byte[] bytes) throws IOException {
+        BufferedImage original = ImageIO.read(new ByteArrayInputStream(bytes));
+        if (original == null) {
+            throw new IllegalArgumentException("El archivo no es una imagen válida");
+        }
 
-        // Redimensionar a 224x224
         BufferedImage img = new BufferedImage(224, 224, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
         g.drawImage(original, 0, 0, 224, 224, null);
         g.dispose();
 
-        // Forma [1][3][224][224]: 1 foto, 3 canales (R,G,B), 224 filas, 224 columnas
         float[][][][] datos = new float[1][3][224][224];
         for (int y = 0; y < 224; y++) {
             for (int x = 0; x < 224; x++) {
@@ -71,7 +84,6 @@ public class Clasificador {
         return datos;
     }
 
-    // Convierte los 2 números crudos en porcentajes que suman 100%
     static float[] softmax(float[] v) {
         float max = Math.max(v[0], v[1]);
         float e0 = (float) Math.exp(v[0] - max);

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BacheAlert — Reportar un bache</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header>
+    <h1>🕳️ BacheAlert</h1>
+    <nav>
+      <a href="index.html" class="activo">Reportar</a>
+      <a href="reportes.html">Ver reportes</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="tarjeta">
+      <h2>Reportar un bache</h2>
+      <p>Sube una foto. Nuestro modelo verificará que sea un bache antes de registrar el reporte.</p>
+
+      <form id="formulario">
+        <label for="foto">Foto del bache *</label>
+        <input type="file" id="foto" name="foto" accept="image/*" required>
+
+        <img id="vista-previa" alt="Vista previa" hidden>
+
+        <label for="descripcion">Descripción (opcional)</label>
+        <input type="text" id="descripcion" name="descripcion" placeholder="Ej. Bache grande en la esquina">
+
+        <label for="ubicacion">Ubicación (opcional)</label>
+        <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej. Calle Principal 123">
+
+        <button type="submit" id="boton">Enviar reporte</button>
+      </form>
+
+      <div id="resultado" hidden></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -18,18 +18,31 @@
         <java.version>21</java.version>
     </properties>
 
-    <dependencies>
+        <dependencies>
         <!-- Servidor web y endpoints -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Librería para ejecutar el modelo .onnx (la misma de antes) -->
+        <!-- Librería para ejecutar el modelo .onnx -->
         <dependency>
             <groupId>com.microsoft.onnxruntime</groupId>
             <artifactId>onnxruntime</artifactId>
             <version>1.20.0</version>
+        </dependency>
+
+        <!-- Guardar objetos en base de datos sin escribir SQL -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- Base de datos H2: vive dentro de la app, no se instala nada -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

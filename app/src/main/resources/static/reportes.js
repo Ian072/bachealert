@@ -15,11 +15,11 @@ async function cargarReportes() {
 
     lista.innerHTML = reportes.map(r => `
       <article class="reporte tarjeta" style="padding: 0;">
-        <img src="/api/fotos/${r.rutaFoto}" alt="Foto del reporte ${r.id}">
+        <img src="/api/fotos/${encodeURIComponent(r.rutaFoto)}" alt="Foto del reporte ${r.id}">
         <div class="cuerpo">
           <strong>Reporte #${r.id}</strong>
-          <p class="meta">📍 ${r.ubicacion || "Sin ubicación"}</p>
-          <p class="meta">📝 ${r.descripcion || "Sin descripción"}</p>
+          <p class="meta">📍 ${escapar(r.ubicacion) || "Sin ubicación"}</p>
+          <p class="meta">📝 ${escapar(r.descripcion) || "Sin descripción"}</p>
           <p class="meta">🕒 ${formatearFecha(r.fecha)} · Confianza ${r.probBache}%</p>
         </div>
       </article>
@@ -27,6 +27,18 @@ async function cargarReportes() {
   } catch (e) {
     lista.innerHTML = '<p class="vacio">No se pudieron cargar los reportes.</p>';
   }
+}
+
+// Convierte el texto del usuario en texto seguro: <, >, & y comillas
+// se muestran como caracteres y no se interpretan como HTML
+function escapar(texto) {
+  if (!texto) return "";
+  return texto
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function formatearFecha(iso) {

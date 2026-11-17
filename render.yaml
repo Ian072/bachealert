@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: bachealert
+    runtime: docker
+    plan: free
+    dockerfilePath: ./app/Dockerfile
+    dockerContext: ./app
+    healthCheckPath: /
+    autoDeploy: true

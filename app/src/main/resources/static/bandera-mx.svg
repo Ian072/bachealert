@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">
+  <rect width="10" height="20" fill="#006847"/>
+  <rect x="10" width="10" height="20" fill="#FFFFFF"/>
+  <rect x="20" width="10" height="20" fill="#CE1126"/>
+  <!-- Escudo simplificado: águila sobre el nopal -->
+  <ellipse cx="15" cy="10.6" rx="2.9" ry="2.6" fill="#8C5A2B"/>
+  <path d="M12.6 12.9q2.4 1.6 4.8 0" stroke="#3B7D3A" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+</svg>

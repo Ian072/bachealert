@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BacheAlert — Reporta un bache</title>
-  <meta name="description" content="Toma una foto del bache, nuestra IA verifica que lo sea y el reporte queda registrado.">
+  <title data-i18n="inicio.titulo">BacheAlert — Reporta un bache</title>
+  <meta name="description" data-i18n-content="inicio.descripcion" content="Toma una foto del bache, nuestra IA verifica que lo sea y el reporte queda registrado.">
   <link rel="icon" href="logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,69 +13,79 @@
 </head>
 <body>
   <header class="barra">
-    <a href="index.html" class="marca" aria-label="BacheAlert, inicio">
+    <a href="index.html" class="marca" data-i18n-aria="nav.inicio" aria-label="BacheAlert, inicio">
       <img src="logo.svg" alt="" width="40" height="40">
       <span>BacheAlert</span>
     </a>
-    <nav aria-label="Principal">
-      <a href="index.html" aria-current="page">Reportar</a>
-      <a href="reportes.html">Ver reportes</a>
-    </nav>
+    <div class="barra-derecha">
+      <nav data-i18n-aria="nav.principal" aria-label="Principal">
+        <a href="index.html" aria-current="page" data-i18n="nav.reportar">Reportar</a>
+        <a href="reportes.html" data-i18n="nav.reportes">Ver reportes</a>
+      </nav>
+      <div class="idiomas" role="group" data-i18n-aria="idioma.grupo" aria-label="Idioma">
+        <button type="button" data-idioma="es" aria-pressed="true" lang="es" title="Español" aria-label="Español">
+          <img src="bandera-mx.svg" alt="" width="24" height="16"><span>ES</span>
+        </button>
+        <button type="button" data-idioma="en" aria-pressed="false" lang="en" title="English" aria-label="English">
+          <img src="bandera-us.svg" alt="" width="24" height="16"><span>EN</span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <section class="portada">
     <div class="portada-texto">
-      <h1>Ese bache tiene los días contados.</h1>
-      <p>Tómale una foto y súbela aquí. Nuestra IA revisa que de verdad sea un bache y tu reporte queda registrado para que la ciudad lo vea. ¡Gracias por cuidar tus calles!</p>
+      <h1 data-i18n="inicio.h1">Ese bache tiene los días contados.</h1>
+      <p data-i18n="inicio.intro">Tómale una foto y súbela aquí. Nuestra IA revisa que de verdad sea un bache y tu reporte queda registrado para que la ciudad lo vea. ¡Gracias por cuidar tus calles!</p>
     </div>
 
-    <ol class="calle" aria-label="Cómo funciona">
+    <ol class="calle" data-i18n-aria="pasos.aria" aria-label="Cómo funciona">
       <li>
         <span class="paso-num">1</span>
-        <strong>Toma la foto</strong>
-        <span>Desde tu celular o tu computadora.</span>
+        <strong data-i18n="paso1.titulo">Toma la foto</strong>
+        <span data-i18n="paso1.texto">Desde tu celular o tu computadora.</span>
       </li>
       <li>
         <span class="paso-num">2</span>
-        <strong>La IA la revisa</strong>
-        <span>En segundos confirma si es un bache.</span>
+        <strong data-i18n="paso2.titulo">La IA la revisa</strong>
+        <span data-i18n="paso2.texto">En segundos confirma si es un bache.</span>
       </li>
       <li>
         <span class="paso-num">3</span>
-        <strong>Queda registrado</strong>
-        <span>Tu reporte aparece en la lista pública.</span>
+        <strong data-i18n="paso3.titulo">Queda registrado</strong>
+        <span data-i18n="paso3.texto">Tu reporte aparece en la lista pública.</span>
       </li>
     </ol>
   </section>
 
   <main class="contenido">
     <section class="panel" aria-labelledby="titulo-form">
-      <h2 id="titulo-form">Reporta un bache</h2>
+      <h2 id="titulo-form" data-i18n="form.titulo">Reporta un bache</h2>
 
       <form id="formulario" novalidate>
         <div class="zona-foto" id="zona-foto">
           <input type="file" id="foto" name="foto" accept="image/*" required class="oculto">
           <label for="foto" class="zona-vacia" id="zona-vacia">
             <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path fill="currentColor" d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9Zm3 5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
-            <strong>Toma o elige una foto</strong>
-            <span>Que el bache se vea completo y con buena luz</span>
+            <strong data-i18n="form.fotoTitulo">Toma o elige una foto</strong>
+            <span data-i18n="form.fotoAyuda">Que el bache se vea completo y con buena luz</span>
           </label>
           <figure class="vista" id="vista" hidden>
-            <img id="vista-previa" alt="Foto que vas a reportar">
+            <img id="vista-previa" data-i18n-alt="form.fotoAlt" alt="Foto que vas a reportar">
             <div class="escaner" aria-hidden="true"></div>
-            <label for="foto" class="cambiar">Cambiar foto</label>
+            <label for="foto" class="cambiar" data-i18n="form.cambiar">Cambiar foto</label>
           </figure>
         </div>
-        <p class="aviso-campo" id="aviso-foto" hidden>Primero elige una foto del bache.</p>
+        <p class="aviso-campo" id="aviso-foto" data-i18n="form.faltaFoto" hidden>Primero elige una foto del bache.</p>
 
         <div class="campos">
           <div class="campo">
-            <label for="ubicacion">¿Dónde está? <span class="opcional">(opcional)</span></label>
-            <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej. Av. Tecnológico y Calle Ejército" autocomplete="street-address">
+            <label for="ubicacion"><span data-i18n="form.ubicacion">¿Dónde está?</span> <span class="opcional" data-i18n="form.opcional">(opcional)</span></label>
+            <input type="text" id="ubicacion" name="ubicacion" data-i18n-placeholder="form.ubicacionEj" placeholder="Ej. Av. Tecnológico y Calle Ejército" autocomplete="street-address">
           </div>
           <div class="campo">
-            <label for="descripcion">Cuéntanos más <span class="opcional">(opcional)</span></label>
-            <input type="text" id="descripcion" name="descripcion" placeholder="Ej. Es grande y está en el carril derecho">
+            <label for="descripcion"><span data-i18n="form.descripcion">Cuéntanos más</span> <span class="opcional" data-i18n="form.opcional">(opcional)</span></label>
+            <input type="text" id="descripcion" name="descripcion" data-i18n-placeholder="form.descripcionEj" placeholder="Ej. Es grande y está en el carril derecho">
           </div>
         </div>
 
@@ -87,9 +97,10 @@
   </main>
 
   <footer class="pie">
-    <p>BacheAlert es un proyecto ciudadano hecho con Java, Spring Boot y un modelo de IA entrenado para reconocer baches.</p>
+    <p data-i18n="pie">BacheAlert es un proyecto ciudadano hecho con Java, Spring Boot y un modelo de IA entrenado para reconocer baches.</p>
   </footer>
 
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

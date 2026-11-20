@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BacheAlert — Reportes de la ciudad</title>
-  <meta name="description" content="Todos los baches que la comunidad ha reportado y nuestra IA ha verificado.">
+  <title data-i18n="lista.titulo">BacheAlert — Reportes de la ciudad</title>
+  <meta name="description" data-i18n-content="lista.descripcion" content="Todos los baches que la comunidad ha reportado y nuestra IA ha verificado.">
   <link rel="icon" href="logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,20 +13,30 @@
 </head>
 <body>
   <header class="barra">
-    <a href="index.html" class="marca" aria-label="BacheAlert, inicio">
+    <a href="index.html" class="marca" data-i18n-aria="nav.inicio" aria-label="BacheAlert, inicio">
       <img src="logo.svg" alt="" width="40" height="40">
       <span>BacheAlert</span>
     </a>
-    <nav aria-label="Principal">
-      <a href="index.html">Reportar</a>
-      <a href="reportes.html" aria-current="page">Ver reportes</a>
-    </nav>
+    <div class="barra-derecha">
+      <nav data-i18n-aria="nav.principal" aria-label="Principal">
+        <a href="index.html" data-i18n="nav.reportar">Reportar</a>
+        <a href="reportes.html" aria-current="page" data-i18n="nav.reportes">Ver reportes</a>
+      </nav>
+      <div class="idiomas" role="group" data-i18n-aria="idioma.grupo" aria-label="Idioma">
+        <button type="button" data-idioma="es" aria-pressed="true" lang="es" title="Español" aria-label="Español">
+          <img src="bandera-mx.svg" alt="" width="24" height="16"><span>ES</span>
+        </button>
+        <button type="button" data-idioma="en" aria-pressed="false" lang="en" title="English" aria-label="English">
+          <img src="bandera-us.svg" alt="" width="24" height="16"><span>EN</span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <section class="encabezado-lista">
     <div>
-      <h1>Baches reportados</h1>
-      <p>Cada foto de esta lista fue enviada por alguien como tú y verificada por nuestra IA.</p>
+      <h1 data-i18n="lista.h1">Baches reportados</h1>
+      <p data-i18n="lista.intro">Cada foto de esta lista fue enviada por alguien como tú y verificada por nuestra IA.</p>
     </div>
     <div class="contador" id="contador" hidden>
       <span class="contador-num" id="contador-num">0</span>
@@ -36,14 +46,15 @@
 
   <main class="contenido contenido-ancho">
     <div id="lista" class="grid" aria-live="polite">
-      <p class="cargando">Cargando reportes…</p>
+      <p class="cargando" data-i18n="lista.cargando">Cargando reportes…</p>
     </div>
   </main>
 
   <footer class="pie">
-    <p>BacheAlert es un proyecto ciudadano hecho con Java, Spring Boot y un modelo de IA entrenado para reconocer baches.</p>
+    <p data-i18n="pie">BacheAlert es un proyecto ciudadano hecho con Java, Spring Boot y un modelo de IA entrenado para reconocer baches.</p>
   </footer>
 
+  <script src="i18n.js"></script>
   <script src="reportes.js"></script>
 </body>
 </html>

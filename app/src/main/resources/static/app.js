@@ -63,27 +63,19 @@ formulario.addEventListener("submit", async (evento) => {
     await esperar(ANALISIS_MINIMO - (Date.now() - inicio));
 
     if (!respuesta.ok) {
-      mostrarError(json.error || "No pudimos revisar la foto. Intenta con otra imagen.");
+      // 400 = el archivo no es una imagen; cualquier otro error = falla al procesar
+      mostrarResultado({ tipo: "error", clave: respuesta.status === 400 ? "res.errorImagen" : "res.errorServidor" });
     } else if (json.esBache) {
-      mostrar("ok", `
-        <h3>¡Listo! Tu reporte #${json.reporteId} quedó registrado</h3>
-        <p>Gracias por ayudar a que tu ciudad tenga mejores calles.</p>
-        ${medidor("Seguridad de que es un bache", json.probBache)}
-        <div class="acciones">
-          <a href="reportes.html">Ver todos los reportes</a>
-        </div>`);
+      mostrarResultado({ tipo: "ok", id: json.reporteId, prob: json.probBache });
       formulario.reset();
       vista.hidden = true;
       zonaVacia.hidden = false;
     } else {
-      mostrar("rechazo", `
-        <h3>Mmm, esta foto no parece un bache</h3>
-        <p>No registramos el reporte. Prueba con una foto más cercana, con buena luz y donde el bache se vea completo.</p>
-        ${medidor("Probabilidad de bache", json.probBache)}`);
+      mostrarResultado({ tipo: "rechazo", prob: json.probBache });
     }
   } catch (e) {
     await esperar(ANALISIS_MINIMO - (Date.now() - inicio));
-    mostrarError("No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo; si la página estuvo inactiva, puede tardar un minuto en despertar.");
+    mostrarResultado({ tipo: "error", clave: "res.errorConexion" });
   } finally {
     ocupado(false);
   }
@@ -92,7 +84,7 @@ formulario.addEventListener("submit", async (evento) => {
 // ---------- Ayudantes ----------
 function ocupado(si) {
   boton.disabled = si;
-  boton.innerHTML = si ? '<span class="giro" aria-hidden="true"></span> Revisando tu foto…' : "Enviar reporte";
+  boton.innerHTML = si ? `<span class="giro" aria-hidden="true"></span> ${t("form.revisando")}` : t("form.enviar");
   vista.classList.toggle("analizando", si);
 }
 
@@ -112,16 +104,37 @@ function medidor(etiqueta, porcentaje) {
     </div>`;
 }
 
-function mostrarError(texto) {
-  mostrar("error", `<h3>Algo salió mal</h3><p>${escapar(texto)}</p>`);
-}
+// Guarda el último resultado para poder volver a dibujarlo si cambia el idioma
+let ultimoResultado = null;
 
-function mostrar(tipo, html) {
-  resultado.className = "resultado " + tipo;
+function mostrarResultado(datos, desplazar = true) {
+  ultimoResultado = datos;
+  let html;
+  if (datos.tipo === "ok") {
+    html = `
+      <h3>${t("res.okTitulo", { id: datos.id })}</h3>
+      <p>${t("res.okTexto")}</p>
+      ${medidor(t("res.okMedidor"), datos.prob)}
+      <div class="acciones"><a href="reportes.html">${t("res.verTodos")}</a></div>`;
+  } else if (datos.tipo === "rechazo") {
+    html = `
+      <h3>${t("res.noTitulo")}</h3>
+      <p>${t("res.noTexto")}</p>
+      ${medidor(t("res.noMedidor"), datos.prob)}`;
+  } else {
+    html = `<h3>${t("res.errorTitulo")}</h3><p>${escapar(t(datos.clave))}</p>`;
+  }
+  resultado.className = "resultado " + datos.tipo;
   resultado.innerHTML = html;
   resultado.hidden = false;
-  resultado.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  if (desplazar) resultado.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
+
+// Al cambiar de idioma, se traducen el botón y el resultado que esté en pantalla
+alCambiarIdioma.push(() => {
+  if (!boton.disabled) boton.textContent = t("form.enviar");
+  if (ultimoResultado && !resultado.hidden) mostrarResultado(ultimoResultado, false);
+});
 
 function esperar(ms) {
   return new Promise(r => setTimeout(r, Math.max(0, ms)));

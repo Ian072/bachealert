@@ -116,7 +116,49 @@ a { color: inherit; }
   letter-spacing: 0.01em;
 }
 
+.barra-derecha {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .barra nav { display: flex; gap: 6px; }
+
+/* Selector de idioma: dos pestañas con bandera */
+.idiomas {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--asfalto-2);
+  border-radius: 999px;
+}
+.idiomas button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #A9AEB4;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.idiomas button img {
+  display: block;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 25%);
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.idiomas button:hover { color: #fff; }
+.idiomas button:hover img { opacity: 1; }
+.idiomas button[aria-pressed="true"] { background: #fff; color: var(--asfalto); }
+.idiomas button[aria-pressed="true"] img { opacity: 1; }
 
 .barra nav a {
   text-decoration: none;
@@ -517,6 +559,15 @@ a { color: inherit; }
 
 /* ---------- Celular ---------- */
 @media (max-width: 640px) {
+  /* El selector de idioma sube junto al logo, arriba a la derecha; el menú baja a su propia fila */
+  .barra-derecha { display: contents; }
+  .idiomas { order: 1; }
+  .idiomas button { padding: 6px 10px; }
+  .idiomas button span { display: none; }   /* en celular quedan solo las banderas */
+  .barra nav { order: 2; width: 100%; }
+  .marca { font-size: 1.5rem; }
+  .marca img { width: 34px; height: 34px; }
+
   .calle { grid-template-columns: 1fr; gap: 20px; }
   .calle::before {
     left: 22px; right: auto; top: 0; bottom: 32px;

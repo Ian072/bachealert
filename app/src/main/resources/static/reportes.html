@@ -3,22 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BacheAlert — Reportes</title>
+  <title>BacheAlert — Reportes de la ciudad</title>
+  <meta name="description" content="Todos los baches que la comunidad ha reportado y nuestra IA ha verificado.">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <header>
-    <h1>🕳️ BacheAlert</h1>
-    <nav>
+  <header class="barra">
+    <a href="index.html" class="marca" aria-label="BacheAlert, inicio">
+      <img src="logo.svg" alt="" width="40" height="40">
+      <span>BacheAlert</span>
+    </a>
+    <nav aria-label="Principal">
       <a href="index.html">Reportar</a>
-      <a href="reportes.html" class="activo">Ver reportes</a>
+      <a href="reportes.html" aria-current="page">Ver reportes</a>
     </nav>
   </header>
 
-  <main style="max-width: 960px;">
-    <h2>Reportes registrados</h2>
-    <div id="lista" class="grid"></div>
+  <section class="encabezado-lista">
+    <div>
+      <h1>Baches reportados</h1>
+      <p>Cada foto de esta lista fue enviada por alguien como tú y verificada por nuestra IA.</p>
+    </div>
+    <div class="contador" id="contador" hidden>
+      <span class="contador-num" id="contador-num">0</span>
+      <span class="contador-txt" id="contador-txt">baches reportados</span>
+    </div>
+  </section>
+
+  <main class="contenido contenido-ancho">
+    <div id="lista" class="grid" aria-live="polite">
+      <p class="cargando">Cargando reportes…</p>
+    </div>
   </main>
+
+  <footer class="pie">
+    <p>BacheAlert es un proyecto ciudadano hecho con Java, Spring Boot y un modelo de IA entrenado para reconocer baches.</p>
+  </footer>
 
   <script src="reportes.js"></script>
 </body>

@@ -3,41 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BacheAlert — Reportar un bache</title>
+  <title>BacheAlert — Reporta un bache</title>
+  <meta name="description" content="Toma una foto del bache, nuestra IA verifica que lo sea y el reporte queda registrado.">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <header>
-    <h1>🕳️ BacheAlert</h1>
-    <nav>
-      <a href="index.html" class="activo">Reportar</a>
+  <header class="barra">
+    <a href="index.html" class="marca" aria-label="BacheAlert, inicio">
+      <img src="logo.svg" alt="" width="40" height="40">
+      <span>BacheAlert</span>
+    </a>
+    <nav aria-label="Principal">
+      <a href="index.html" aria-current="page">Reportar</a>
       <a href="reportes.html">Ver reportes</a>
     </nav>
   </header>
 
-  <main>
-    <section class="tarjeta">
-      <h2>Reportar un bache</h2>
-      <p>Sube una foto. Nuestro modelo verificará que sea un bache antes de registrar el reporte.</p>
+  <section class="portada">
+    <div class="portada-texto">
+      <h1>Ese bache tiene los días contados.</h1>
+      <p>Tómale una foto y súbela aquí. Nuestra IA revisa que de verdad sea un bache y tu reporte queda registrado para que la ciudad lo vea. ¡Gracias por cuidar tus calles!</p>
+    </div>
 
-      <form id="formulario">
-        <label for="foto">Foto del bache *</label>
-        <input type="file" id="foto" name="foto" accept="image/*" required>
+    <ol class="calle" aria-label="Cómo funciona">
+      <li>
+        <span class="paso-num">1</span>
+        <strong>Toma la foto</strong>
+        <span>Desde tu celular o tu computadora.</span>
+      </li>
+      <li>
+        <span class="paso-num">2</span>
+        <strong>La IA la revisa</strong>
+        <span>En segundos confirma si es un bache.</span>
+      </li>
+      <li>
+        <span class="paso-num">3</span>
+        <strong>Queda registrado</strong>
+        <span>Tu reporte aparece en la lista pública.</span>
+      </li>
+    </ol>
+  </section>
 
-        <img id="vista-previa" alt="Vista previa" hidden>
+  <main class="contenido">
+    <section class="panel" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Reporta un bache</h2>
 
-        <label for="descripcion">Descripción (opcional)</label>
-        <input type="text" id="descripcion" name="descripcion" placeholder="Ej. Bache grande en la esquina">
+      <form id="formulario" novalidate>
+        <div class="zona-foto" id="zona-foto">
+          <input type="file" id="foto" name="foto" accept="image/*" required class="oculto">
+          <label for="foto" class="zona-vacia" id="zona-vacia">
+            <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path fill="currentColor" d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9Zm3 5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+            <strong>Toma o elige una foto</strong>
+            <span>Que el bache se vea completo y con buena luz</span>
+          </label>
+          <figure class="vista" id="vista" hidden>
+            <img id="vista-previa" alt="Foto que vas a reportar">
+            <div class="escaner" aria-hidden="true"></div>
+            <label for="foto" class="cambiar">Cambiar foto</label>
+          </figure>
+        </div>
+        <p class="aviso-campo" id="aviso-foto" hidden>Primero elige una foto del bache.</p>
 
-        <label for="ubicacion">Ubicación (opcional)</label>
-        <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej. Calle Principal 123">
+        <div class="campos">
+          <div class="campo">
+            <label for="ubicacion">¿Dónde está? <span class="opcional">(opcional)</span></label>
+            <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej. Av. Tecnológico y Calle Ejército" autocomplete="street-address">
+          </div>
+          <div class="campo">
+            <label for="descripcion">Cuéntanos más <span class="opcional">(opcional)</span></label>
+            <input type="text" id="descripcion" name="descripcion" placeholder="Ej. Es grande y está en el carril derecho">
+          </div>
+        </div>
 
-        <button type="submit" id="boton">Enviar reporte</button>
+        <button type="submit" id="boton" class="boton-principal">Enviar reporte</button>
       </form>
 
-      <div id="resultado" hidden></div>
+      <div id="resultado" class="resultado" role="status" aria-live="polite" hidden></div>
     </section>
   </main>
+
+  <footer class="pie">
+    <p>BacheAlert es un proyecto ciudadano hecho con Java, Spring Boot y un modelo de IA entrenado para reconocer baches.</p>
+  </footer>
 
   <script src="app.js"></script>
 </body>

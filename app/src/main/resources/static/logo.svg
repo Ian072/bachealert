@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Señal preventiva en forma de rombo, como las de tránsito -->
+  <rect x="9.4" y="9.4" width="45.2" height="45.2" rx="6" transform="rotate(45 32 32)" fill="#F5C518" stroke="#1F2226" stroke-width="3.5"/>
+  <!-- Línea de la calle -->
+  <path d="M15 37h34" stroke="#1F2226" stroke-width="3" stroke-linecap="round"/>
+  <!-- El bache: hueco irregular sobre la línea -->
+  <path d="M22.5 37c1.6-4.4 5.4-6.6 9.8-6.3 4 .3 7.4 2.6 8.9 6.3-2.2 3.3-5.6 4.9-9.6 4.8-4.3-.1-7.4-1.8-9.1-4.8Z" fill="#1F2226"/>
+  <!-- Grietas -->
+  <path d="M27 30.5l-2.2-3.4M36.5 30.6l2.4-3.6M32 30.4v-4.2" stroke="#1F2226" stroke-width="2" stroke-linecap="round"/>
+</svg>
